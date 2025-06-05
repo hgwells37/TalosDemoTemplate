@@ -1,0 +1,808 @@
+Talos.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ dataset_name }} - Data Validation Report</title>
+ <style>
+    /* Base Tufte CSS */
+    html { font-size: 15px; }
+
+   body {
+    width: 100%;
+    color: #111;
+    max-width: 2530px;
+    overflow-x: none;
+    counter-reset: sidenote-counter;
+    background-color: #fffff8;
+    font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    display: flex;
+}
+/* Layout adjustments */
+#main-content {
+    margin-left: 0%;
+    width: 80%; /* Adjusted for majority screen usage */
+}
+#sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    max-width: 19%;
+    padding: 1rem;
+    background-color: #f4f4f4;
+    height: 100vh;
+    overflow-y: auto;
+    width:16%;
+    overflow-x:hidden;
+    font-size: 1.2rem;
+    font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+}
+/* Sticky Sidebar */
+#sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+#sidebar li {
+    padding: 0.35rem 0;
+}
+#sidebar a {
+    all: unset;
+    color: #111;
+    text-decoration: none !important;
+    font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+}
+#sidebar a:hover {
+    text-decoration: underline !important;
+}
+#sidebar .sidebar-section {
+    font-weight: bold;
+    font-size: large;
+}
+#sidebar .sidebar-subsection {
+    margin-left: 1rem;
+    font-weight: normal;
+    font-size: medium;
+}
+/* Typography */
+h1.title {
+    font-weight: 400;
+    margin-top: 4rem;
+    margin-bottom: 1.5rem;
+    font-size: 3.2rem;
+    line-height: 1;
+}
+h1 {
+    font-weight: 400;
+    margin-top: 2.1rem;
+    margin-bottom: 0;
+    font-size: 2.2rem;
+    line-height: 1;
+}
+h2 {
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.7rem;
+    margin-bottom: 0;
+    line-height: 1;
+}
+h3.subtitle {
+    font-weight: 400;
+    font-style: italic;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    display: block;
+    line-height: 1;
+}
+h3 {
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+    line-height: 1;
+}
+h4 {
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.3rem;
+    margin-top: 1.3rem;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+h4.author, h4.date {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin: 1rem auto;
+    line-height: 1;
+}
+/* Layout */
+article {
+    position: relative;
+    padding: 0rem 0rem 0rem 5rem;
+}
+p, ol, ul { font-size: 1.4rem; }
+p {
+    line-height: 2rem;
+    margin-top: 1.4rem;
+    margin-bottom: 1.4rem;
+    padding-right: 0;
+    vertical-align: baseline;
+    width: 100%;
+}
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+.table-caption {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-style: italic;
+}
+.table-label {
+    font-weight: bold;
+    font-style: normal;
+}
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; white-space: nowrap; }
+th { background-color: #f4f4f4; cursor: pointer; position: relative; }
+.table-container { overflow-x: auto; max-width: 100%; }
+.figure { text-align: center; margin: 20px 0; }
+/* Tooltip for long header text */
+th[title]:hover::after {
+    content: attr(title);
+    display: block;
+    position: absolute;
+    background: #444;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    top: 100%;
+    left: 0;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Lists */
+ol, ul {
+    width: 100%;
+    -webkit-padding-start: 5%;
+    -webkit-padding-end: 5%;
+}
+li { padding: 0.5rem 0; }
+/* Images and figures */
+img {max-width: 100%;}
+div.figure {
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    max-width: 100%;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+    margin: 0 0 3em 0;
+}
+figure {
+    margin: 2rem 0;
+    text-align: center;
+}
+figure img {
+    max-width: 70%;
+    display: block;
+    margin: 0 auto;
+}
+.figure-label {
+    font-weight: bold;
+    font-style: normal;
+}
+figcaption {
+    font-style: italic;
+    font-weight: normal;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+/* Other special elements */
+hr {
+    margin-left: 0;
+    width: 55%;
+    margin: 2rem 0;
+}
+.fullwidth {
+    max-width: 90%;
+    clear: both;
+}
+/* Visualization containers */
+.viz-container {
+    width: 100%;
+    margin: 2rem 0;
+}
+#references {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Data Validation Specific Styles */
+.summary-box {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0066cc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 0 5px 5px 0;
+}
+
+.section-description {
+    background-color: #f0f4f8;
+    border-left: 4px solid #0066cc;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-style: italic;
+    color: #333;
+}
+
+.issues-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.issue-counter {
+    flex: 1;
+    min-width: 200px;
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+}
+
+.high {
+    background-color: #e49da4;
+}
+
+.medium {
+    background-color: #fab57c;
+}
+
+.low {
+    background-color: #8fd8a0;
+}
+
+.severity-high {
+    color: #e49da4;
+    font-weight: bold;
+}
+
+.severity-medium {
+    color: #fab57c;
+    font-weight: bold;
+}
+
+.severity-low {
+    color: #8fd8a0;
+    font-weight: bold;
+}
+
+.data-preview {
+    overflow-x: auto;
+}
+
+.analysis-insights {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.analysis-insights h3 {
+    color: #0066cc;
+    margin-top: 0;
+}
+
+.validation-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.validation-stat {
+    flex: 1;
+    min-width: 180px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #0066cc;
+    text-align: center;
+}
+
+.validation-stat h3 {
+    margin-top: 0;
+    color: #0066cc;
+}
+
+.validation-stat p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.validation-grid {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.validation-grid th {
+    background-color: #f2f2f2;
+    text-align: center;
+    padding: 12px 8px;
+    font-size: 0.9em;
+    vertical-align: bottom;
+    word-break: break-word;
+}
+
+.validation-grid td {
+    text-align: center;
+    padding: 10px 5px;
+}
+
+.issue-type-table {
+    margin-top: 30px;
+}
+
+.status-high {
+    background-color: #e49da4;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.status-medium {
+    background-color: #fab57c;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.status-low {
+    background-color: #8fd8a0;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.first-col {
+    font-weight: bold;
+    text-align: left !important;
+}
+
+.check-ok {
+    color: #28a745;
+}
+
+.issue-alert {
+    color: #dc3545;
+}
+
+.issue-warning {
+    color: #fd7e14;
+}
+
+/* Issue type percentages */
+.issue-type-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.issue-stat {
+    flex: 1;
+    min-width: 150px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #6c757d;
+    text-align: center;
+}
+
+.issue-stat h4 {
+    margin-top: 0;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.issue-stat p {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #e9ecef;
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+.progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    /* background-color: #28a745; */
+}
+
+.progress-bar.progress-bar-score-high {
+    background-color: #dc3545;
+}
+
+.progress-bar.progress-bar-score-medium {
+    background-color: #fd7e14;
+}
+
+.progress-bar.progress-bar-score-low {
+    background-color: #28a745;
+}
+
+
+
+/* Overall score */
+.overall-score {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f0f4f8;
+    border-radius: 5px;
+    border-left: 4px solid #0066cc;
+}
+
+.overall-score h3 {
+    margin-top: 0;
+    color: #0066cc;
+}
+
+.overall-score .score-value {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.score-good {
+    color: #28a745;
+}
+
+.score-medium {
+    color: #fd7e14;
+}
+
+.score-poor {
+    color: #dc3545;
+}
+
+/* Overall validation progress bar */
+.overall-progress-container {
+    width: 100%;
+    background-color: #e9ecef;
+    height: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.overall-progress-bar {
+    height: 20px;
+    float: left;
+}
+
+.passed-section {
+    background-color: #28a745;
+}
+
+.failed-section {
+    background-color: #dc3545;
+}
+
+/* Responsive design */
+@media screen and (max-width: 760px) {
+    body {
+        display: block;
+    }
+    #sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+    #main-content {
+        width: 100%;
+    }
+    p, footer, ol, ul, table, hr { width: 90%; }
+    pre { width: 87.5%; }
+    ul { width: 85%; }
+    figure { max-width: 90%; }
+    div.fullwidth p.caption { max-width: none; }
+    label { cursor: pointer; }
+    div.figure { max-width: 90%; }
+    pre {
+        width: 90%;
+        padding: 0;
+    }
+    .issues-summary, .issue-type-stats {
+        flex-direction: column;
+    }
+    .issue-counter, .issue-stat {
+        min-width: auto;
+    }
+}
+</style>
+</head>
+
+<body>
+    <div id="sidebar">
+        <ul>
+            <li class="sidebar-section"><a href="#summary">Executive Summary</a></li>
+            <li class="sidebar-section"><a href="#dataset-overview">Dataset Overview</a></li>
+            <li class="sidebar-section"><a href="#data-preview">Data Preview</a></li>
+            <li class="sidebar-section"><a href="#data-dictionary">Data Dictionary</a></li>
+            <li class="sidebar-section"><a href="#validation-details">Validation Details</a></li>
+            <li class="sidebar-section"><a href="#validation-summary">Validation Summary</a></li>
+            <li class="sidebar-section"><a href="#recommendations">Recommendations</a></li>
+        </ul>
+    </div>
+
+    <div id="main-content">
+        <article>
+            <h1 class="title">Data Validation Report</h1>
+            <h3 class="subtitle">Table name: <strong>{{ dataset_name }}</strong></h3>
+            <h4 class="author">Generated: <strong>{{ generation_date }}</strong></h4>
+            <h4 class="date" id="current-date"></h4>
+
+            <section id="summary">
+                <h1>Executive Summary</h1>
+                <div class="summary-box">
+                    <p>This report provides a comprehensive validation of the dataset to ensure its quality and readiness for use. It highlights any issues found, such as missing values or incorrect formats, and offers recommendations to improve overall data reliability.</p>
+                </div>
+                <div class="issues-summary">
+                    <div class="issue-counter high">
+                        <h3>{{ high_count }} High Severity</h3>
+                        <p>Critical issues requiring immediate attention</p>
+                    </div>
+                    <div class="issue-counter medium">
+                        <h3>{{ medium_count }} Medium Severity</h3>
+                        <p>Important issues to address</p>
+                    </div>
+                    <div class="issue-counter low">
+                        <h3>{{ low_count }} Low Severity</h3>
+                        <p>Minor issues for enhancement</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="dataset-overview">
+                <h1>Dataset Overview</h1>
+                <div class="section-description">
+                    A high-level summary of the dataset that provides a quick understanding of its structure, content, and basic statistics.
+                </div>
+                <table>
+                    <tr><th>Attribute</th><th>Value</th></tr>
+                    <tr><td>Dataset Name</td><td>{{ dataset_name }}</td></tr>
+                    <tr><td>Number of Columns</td><td>{{ column_count }}</td></tr>
+                    <tr><td>Number of Rows</td><td>{{ row_count }}</td></tr>
+                    <tr><td>File Size</td><td>{{ file_size }}</td></tr>
+                    <tr><td>Data Format</td><td>{{ data_format }}</td></tr>
+                    <tr><td>Last Updated</td><td>{{ last_updated }}</td></tr>
+                    <tr><td>Dictionary Status</td><td>{{ dictionary_status }}</td></tr>
+                </table>
+            </section>
+                
+            <section id="data-preview">
+                <h1>Data Preview</h1>
+                <div class="section-description">
+                    A small snapshot of the dataset — typically the first 10 rows — that gives users a quick look at the actual data values in each column.
+                </div>
+                <div class="data-preview" style="overflow-x: auto;">
+                    {{ df_preview_html | safe }}
+                </div>
+            </section>
+
+            <section id="data-dictionary">
+                <h1>Data Dictionary</h1>
+                <div class="section-description">Original data dictionary provided by the User, detailing the metadata for each column in the dataset. </div>
+                <div class="data-preview" style="overflow-x: auto;">
+                    {{ data_dictionary_html | safe }}
+                </div>
+
+                <h2>Data Dictionary Issues</h2>
+                <div class="section-description">Issues found in the uploaded data dictionary.</div>
+                <div class="data-preview" style="overflow-x: auto;">
+                    {{ data_dictionary_issues_html | safe }}
+                </div>
+
+                <h2>Validated Data Dictionary</h2>
+                <div class="section-description">Cleaned, updated dictionary post-validation.</div>
+                <div class="data-preview" style="overflow-x: auto;">
+                    {{ validated_data_dictionary_html | safe }}
+                </div>
+            </section>
+
+            <section id="validation-details">
+                <h1>Validation Details</h1>
+                <div class="section-description">
+                    Lists all identified discrepancies between the dataset's actual content and the expected metadata specified in the data dictionary.<br><br>
+                    <strong>Note:</strong><br>
+                    - <strong>Pass:</strong> All validation checks passed successfully; the data matches the expected output.<br>
+                    - <strong>Fail:</strong> One or more validation checks failed; mismatches found.
+                </div>
+                <div class="data-preview" style="overflow-x: auto;">
+                    {{ validation_results_html | safe }}
+                    
+                    <table class="issue-type-table">
+                        <tr>
+                            <th>DQ Check Type</th>
+                            <th>Description of Check</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Data type mismatches</strong></td>
+                            <td>Values in a column do not match the expected data type (e.g., string in an int field).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Missing or extra columns</strong></td>
+                            <td>Columns expected in the dataset are missing, or unexpected columns are present.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nullability violations</strong></td>
+                            <td>Fields that should not contain nulls have missing values.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Out-of-range values</strong></td>
+                            <td>Values fall outside the acceptable minimum or maximum defined for the field.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Format errors</strong></td>
+                            <td>Values do not conform to the required format (e.g., date format, phone number).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Uniqueness violations</strong></td>
+                            <td>Duplicate values are found in columns expected to have unique entries.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reference integrity issues</strong></td>
+                            <td>Foreign key values do not match any entry in the referenced table.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cross-field inconsistencies</strong></td>
+                            <td>Values in one field conflict logically with values in another (e.g., end date before start date).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chronological errors</strong></td>
+                            <td>Temporal data is not in a logical sequence (e.g., birth date after registration).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Standardization problems</strong></td>
+                            <td>Data does not follow consistent naming or formatting conventions (e.g., inconsistent case or abbreviations).</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <section id="validation-summary">
+                <h1>Validation Summary</h1>
+                <div class="section-description">
+                    Provides a concise overview of the dataset's data quality by highlighting the percentages of each issue type detected during validation against the data dictionary.<br><br>
+                    <strong>Note:</strong><br>
+                    <strong>Formula:</strong> Issue Percentage = (Number of Fields with Issue / Total Fields) × 100%<br>
+                    <strong>Fields with Issues:</strong> {{ fields_with_issues }}<br>
+                    <strong>Total Fields:</strong> {{ total_fields }}
+                </div>
+                
+                <h2>Overall Validation Score</h2>
+                <div class="overall-score">
+                    <h3>Data Quality Score</h3>
+                    <div class="score-value {{ overall_score_class | default('score-poor') }}">
+                        {{ overall_score | default('0') }}%
+                    </div>
+                    <p>{{ overall_score_description | default('No score description available') }}</p>
+                    <div class="overall-progress-bar passed-section" style="width: {{ overall_score | default('0') }}%"></div>
+<div class="overall-progress-bar failed-section" style="width: {{ overall_failed_score | default('0') }}%"></div>
+                </div>
+                
+                <h2>Breakdown by Issue Type</h2>
+                <div class="issue-type-stats">
+                    <div class="issue-stat">
+                        <h4>Data type mismatches</h4>
+                        <p>{{ data_type_mismatches_percentage }}%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-bar-{{ data_type_mismatches_severity }}" style="width: {{ data_type_mismatches_percentage }}%"></div>
+                        </div>
+                    </div>
+                    <div class="issue-stat">
+                        <h4>Missing or extra columns</h4>
+                        <p>{{ missing_or_extra_columns_percentage }}%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-bar-{{ missing_or_extra_columns_severity }}" style="width: {{ missing_or_extra_columns_percentage }}%"></div>
+                        </div>
+                    </div>
+                    <div class="issue-stat">
+                        <h4>Nullability violations</h4>
+                        <p>{{ nullability_violations_percentage }}%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-bar-{{ nullability_violations_severity }}" style="width: {{ nullability_violations_percentage }}%"></div>
+                        </div>
+                    </div>
+                    <div class="issue-stat">
+                        <h4>Out-of-range values</h4>
+                        <p>{{ out_of_range_values_percentage }}%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-bar-{{ out_of_range_values_severity }}" style="width: {{ out_of_range_values_percentage }}%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="issue-type-stats">
+                    <div class="issue-stat">
+                        <h4>Format errors</h4>
+                        <p>{{ format_errors_percentage }}%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-bar-{{ format_errors_severity }}" style="width: {{ format_errors_percentage }}%"></div>
+                        </div>
+                    </div>
+                    <div class="issue-stat">
+                        <h4>Uniqueness violations</h4>
+                        <p>{{ uniqueness_violations_percentage }}%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-bar-{{ uniqueness_violations_severity }}" style="width: {{ uniqueness_violations_percentage }}%"></div>
+                        </div>
+                    </div>
+                    <div class="issue-stat">
+                        <h4>Reference integrity issues</h4>
+                        <p>{{ reference_integrity_issues_percentage }}%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-bar-{{ reference_integrity_issues_severity }}" style="width: {{ reference_integrity_issues_percentage }}%"></div>
+                        </div>
+                    </div>
+                    <div class="issue-stat">
+                        <h4>Cross-field inconsistencies</h4>
+                        <p>{{ cross_field_inconsistencies_percentage }}%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-bar-{{ cross_field_inconsistencies_severity }}" style="width: {{ cross_field_inconsistencies_percentage }}%"></div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                    <div class="issue-type-stats">
+                        <div class="issue-stat">
+                            <h4>Chronological errors</h4>
+                            <p>{{ chronological_errors_percentage }}%</p>
+                            <div class="progress-container">
+                                <div class="progress-bar progress-bar-{{ chronological_errors_severity }}" style="width: {{ chronological_errors_percentage }}%"></div>
+                            </div>
+                        </div>
+                        <div class="issue-stat">
+                            <h4>Standardization problems</h4>
+                            <p>{{ standardization_problems_percentage }}%</p>
+                            <div class="progress-container">
+                                <div class="progress-bar progress-bar-{{ standardization_problems_severity }}" style="width: {{ standardization_problems_percentage }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analysis-insights">
+                        <h3>Summary Analysis</h3>
+                        <p>{{ summary_analysis_intro }}</p>
+                        <ul>
+                            <li><strong>Missing Values:</strong> {{ missing_values_summary | default('N/A') }}</li>
+                            <li><strong>Data Type Issues:</strong> {{ data_type_issues_summary | default('N/A') }}</li>
+                            <li><strong>Format and Range Problems:</strong> {{ format_range_problems_summary | default('N/A') }}</li>
+                            <li><strong>Uniqueness and Standardization:</strong> {{ uniqueness_standardization_summary | default('N/A') }}</li>
+                            <li><strong>Constraint and Reference Issues:</strong> {{ constraint_reference_summary | default('N/A') }}</li>
+                            <li><strong>Cross-field and Chronological Issues:</strong> {{ crossfield_chronological_summary | default('N/A') }}</li>
+                            <li><strong>Most Problematic Issue Types:</strong> {{ problematic_issue_types_summary | default('N/A') }}</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="recommendations" class="section">
+                    <h2>Recommendations</h2>
+                    <ul>
+                        <li><strong>{{ rec_1_title }}:</strong> {{ rec_1_details }}</li>
+                        <li><strong>{{ rec_2_title }}:</strong> {{ rec_2_details }}</li>
+                        <li><strong>{{ rec_3_title }}:</strong> {{ rec_3_details }}</li>
+                    </ul>
+                </section>
+    </div>
+</body>
+</html>
