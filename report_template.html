@@ -18,6 +18,11 @@
     font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
     display: flex;
 }
+/* Scrollable table wrapper for large tables */
+.scrollable-table {
+    overflow-x: auto;
+    max-width: 100%;
+}
 /* Layout adjustments */
 #main-content {
     margin-left: 0%;
@@ -227,6 +232,24 @@ hr {
     margin-bottom: 20px;
     border-radius: 0 5px 5px 0;
 }
+
+.introduction-box {
+    background-color: #e8f4fd;
+    border-left: 4px solid #2196F3;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 0 8px 8px 0;
+}
+
+.story-transition {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin: 25px 0;
+    border-radius: 0 5px 5px 0;
+    font-style: italic;
+}
+
 
 .section-description {
     background-color: #f0f4f8;
@@ -496,6 +519,44 @@ hr {
 .failed-section {
     background-color: #dc3545;
 }
+   
+/* Key metrics cards */
+.key-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.metric-card {
+    flex: 1;
+    min-width: 180px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.metric-card h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.metric-card .metric-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #0066cc;
+}
+
+.metric-card .metric-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}
 
 /* Responsive design */
 @media screen and (max-width: 760px) {
@@ -521,10 +582,10 @@ hr {
         width: 90%;
         padding: 0;
     }
-    .issues-summary, .issue-type-stats {
+    .issues-summary, .issue-type-stats, .key-metrics {
         flex-direction: column;
     }
-    .issue-counter, .issue-stat {
+     .issue-counter, .issue-stat, .metric-card {
         min-width: auto;
     }
 }
@@ -534,56 +595,60 @@ hr {
 <body>
     <div id="sidebar">
         <ul>
-            <li class="sidebar-section"><a href="#summary">Executive Summary</a></li>
+            <li class="sidebar-section"><a href="#introduction">Introduction</a></li>
             <li class="sidebar-section"><a href="#dataset-overview">Dataset Overview</a></li>
             <li class="sidebar-section"><a href="#data-preview">Data Preview</a></li>
-            <li class="sidebar-section"><a href="#data-dictionary">Data Dictionary</a></li>
-            <li class="sidebar-section"><a href="#validation-details">Validation Details</a></li>
-            <li class="sidebar-section"><a href="#validation-summary">Validation Summary</a></li>
+            <li class="sidebar-section"><a href="#data-dictionary-analysis">Data Dictionary Analysis</a></li>
+          <li class="sidebar-section"><a href="#key-findings">Key Findings</a></li>
+          <li class="sidebar-section"><a href="#data-quality-validation-results">Data Validation Results</a></li>
             <li class="sidebar-section"><a href="#recommendations">Recommendations</a></li>
+          
         </ul>
     </div>
 
     <div id="main-content">
         <article>
             <h1 class="title">Data Validation Report</h1>
-            <h3 class="subtitle">Table name: <strong>{{ dataset_name }}</strong></h3>
+            <h3 class="subtitle">Quality Assessment for <strong>{{ dataset_name }}</strong></h3>
             <h4 class="author">Generated: <strong>{{ generation_date }}</strong></h4>
             <h4 class="date" id="current-date"></h4>
+             <section id="introduction">
+                <h1>Introduction</h1>
+                <div class="introduction-box">
 
-            <section id="summary">
-                <h1>Executive Summary</h1>
-                <div class="summary-box">
-                    <p>This report provides a comprehensive validation of the dataset to ensure its quality and readiness for use. It highlights any issues found, such as missing values or incorrect formats, and offers recommendations to improve overall data reliability.</p>
-                </div>
-                <div class="issues-summary">
-                    <div class="issue-counter high">
-                        <h3>{{ high_count }} High Severity</h3>
-                        <p>Critical issues requiring immediate attention</p>
-                    </div>
-                    <div class="issue-counter medium">
-                        <h3>{{ medium_count }} Medium Severity</h3>
-                        <p>Important issues to address</p>
-                    </div>
-                    <div class="issue-counter low">
-                        <h3>{{ low_count }} Low Severity</h3>
-                        <p>Minor issues for enhancement</p>
-                    </div>
+                    <p>This comprehensive data quality assessment validates the dataset's readiness for analytical modeling and statistical analysis. As a data scientist, you need reliable, clean data before proceeding with feature engineering, model development, or predictive analytics—this report identifies critical quality issues that could compromise your analytical outcomes and provides prioritized recommendations for remediation.</p>
                 </div>
             </section>
-
             <section id="dataset-overview">
                 <h1>Dataset Overview</h1>
                 <div class="section-description">
-                    A high-level summary of the dataset that provides a quick understanding of its structure, content, and basic statistics.
+                    Let's start by understanding what we're working with. Here's a snapshot of your dataset's basic characteristics.
+                </div>
+                <div class="key-metrics">
+                    <div class="metric-card">
+                        <h3>Dataset Size</h3>
+                        <div class="metric-value">{{ row_count }}</div>
+                        <p class="metric-description">Total Records</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Data Fields</h3>
+                        <div class="metric-value">{{ column_count }}</div>
+                        <p class="metric-description">Columns</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>File Size</h3>
+                        <div class="metric-value">{{ file_size }}</div>
+                        <p class="metric-description">Storage Required</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Format</h3>
+                        <div class="metric-value">{{ data_format }}</div>
+                        <p class="metric-description">Data Type</p>
+                    </div>
                 </div>
                 <table>
                     <tr><th>Attribute</th><th>Value</th></tr>
                     <tr><td>Dataset Name</td><td>{{ dataset_name }}</td></tr>
-                    <tr><td>Number of Columns</td><td>{{ column_count }}</td></tr>
-                    <tr><td>Number of Rows</td><td>{{ row_count }}</td></tr>
-                    <tr><td>File Size</td><td>{{ file_size }}</td></tr>
-                    <tr><td>Data Format</td><td>{{ data_format }}</td></tr>
                     <tr><td>Last Updated</td><td>{{ last_updated }}</td></tr>
                     <tr><td>Dictionary Status</td><td>{{ dictionary_status }}</td></tr>
                 </table>
@@ -592,208 +657,227 @@ hr {
             <section id="data-preview">
                 <h1>Data Preview</h1>
                 <div class="section-description">
-                    A small snapshot of the dataset — typically the first 10 rows — that gives users a quick look at the actual data values in each column.
+                     Here's your first look at the actual data. This preview shows the structure and sample values to help you understand what we're validating.
                 </div>
+              
                 <div class="data-preview" style="overflow-x: auto;">
                     {{ df_preview_html | safe }}
                 </div>
-            </section>
-
-            <section id="data-dictionary">
-                <h1>Data Dictionary</h1>
-                <div class="section-description">Original data dictionary provided by the User, detailing the metadata for each column in the dataset. </div>
-                <div class="data-preview" style="overflow-x: auto;">
-                    {{ data_dictionary_html | safe }}
+              <h2>Meta Data</h2>
+                <div class="section-description">
+                    The following schema analysis provides a comprehensive assessment of the dataset's structural composition, datatypes, and completeness metrics essential for analytical validation.
                 </div>
-
-                <h2>Data Dictionary Issues</h2>
-                <div class="section-description">Issues found in the uploaded data dictionary.</div>
                 <div class="data-preview" style="overflow-x: auto;">
+                    {{ data_type_html | safe }}
+                </div>
+              <div class="story-transition">  
+                    <p><strong>What's Next:</strong> Now that we've seen the data, let's examine the blueprint we're using to validate it - your data dictionary.</p>
+                </div>
+            </section>
+            <section id="data-dictionary-analysis">
+                <h1>Data Dictionary Analysis</h1>
+                <div class="section-description">
+                    The data dictionary serves as our validation blueprint. It defines what each field should contain, its format, and constraints. Let's examine both the original specifications and what we discovered.
+                </div>
+                <h2>Original Specifications</h2>
+                <div class="section-description">
+                    provided by the User, detailing the metadata for each column in the dataset.
+                </div>
+              <div class="data-preview" style="overflow-x: auto;">
+                    {{ original_data_dictionary_html | safe }}
+                </div>
+                <h2>Dictionary Issues Found</h2>
+                <div class="section-description">
+                    This section compares the provided data dictionary against the actual dataset to identify any discrepancies.Here's what needed clarification or correction.
+                </div>
+              <div class="data-preview" style="overflow-x: auto;">
+
                     {{ data_dictionary_issues_html | safe }}
                 </div>
-
-                <h2>Validated Data Dictionary</h2>
-                <div class="section-description">Cleaned, updated dictionary post-validation.</div>
+                <h2>Refined Dictionary</h2>
+                <div class="section-description">
+                    Based on our analysis, here's the corrected and validated data dictionary we used for validation.
+                </div>
                 <div class="data-preview" style="overflow-x: auto;">
                     {{ validated_data_dictionary_html | safe }}
                 </div>
+              <div class="story-transition">
+                    <p><strong>What's Next:</strong> With a clear understanding of expectations, let's see how your data measures up.</p>
+                </div>
             </section>
 
-            <section id="validation-details">
-                <h1>Validation Details</h1>
+            <section id="detailed-analysis">
+              <section id="key-findings">
+                <h1>Key Findings</h1>
                 <div class="section-description">
-                    Lists all identified discrepancies between the dataset's actual content and the expected metadata specified in the data dictionary.<br><br>
-                    <strong>Note:</strong><br>
-                    - <strong>Pass:</strong> All validation checks passed successfully; the data matches the expected output.<br>
-                    - <strong>Fail:</strong> One or more validation checks failed; mismatches found.
+                    Here's what our validation uncovered. We've categorized issues by severity to help you prioritize your response.
+                  <br><br>
+    <strong>•</strong> categorized the identified data quality issues by severity, aligned with predefined definitions to guide prioritization and remediation efforts.
+                </div>
+                <div class="issues-summary">
+                    <div class="issue-counter high">
+                        <h3>{{ high_count }} Critical Issues</h3>
+                        <p>Must be addressed immediately</p>
+                    </div>
+                    <div class="issue-counter medium">
+                        <h3>{{ medium_count }} Medium Issues</h3>
+                        <p>Should be resolved soon</p>
+                    </div>
+                    <div class="issue-counter low">
+                        <h3>{{ low_count }} Low Issues</h3>
+                        <p>Good to fix for optimization</p>
+                    </div>
+                </div>
+                <div class="story-transition">
+                    <p><strong>Note:</strong> {{ fields_with_issues }} out of {{ total_fields }} fields have issues that need attention. Let's dive deeper into what we found.</p>
+                </div>
+            </section>
+              </section>
+              <section id="data-quality-validation-results" class="section">
+                <h1>Data Validation Results</h1>
+                <div class="section-description">
+
+                    This section presents comprehensive validation results comparing the actual dataset against the data dictionary specifications. Each failed validation check is documented with specific examples showing the problematic data entries. The results are categorized by validation type, with detailed breakdowns of failure instances to facilitate targeted data remediation efforts.
+
+                </div>
+                <h2>Summary</h2>
+                <div class="section-description">
+                    Overview of all data quality checks performed, showing pass(<strong>✓</strong>) / fail(<strong>x</strong>) status and quantified failure details for each validation category.<br><br>
+                  <strong>Note:</strong> The "Failed details" column uses the format:
+{FieldName – FailedRowCount}<br>
+This indicates which field failed the validation and how many rows were affected.
                 </div>
                 <div class="data-preview" style="overflow-x: auto;">
                     {{ validation_results_html | safe }}
-                    
-                    <table class="issue-type-table">
-                        <tr>
-                            <th>DQ Check Type</th>
-                            <th>Description of Check</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Data type mismatches</strong></td>
-                            <td>Values in a column do not match the expected data type (e.g., string in an int field).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Missing or extra columns</strong></td>
-                            <td>Columns expected in the dataset are missing, or unexpected columns are present.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Nullability violations</strong></td>
-                            <td>Fields that should not contain nulls have missing values.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Out-of-range values</strong></td>
-                            <td>Values fall outside the acceptable minimum or maximum defined for the field.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Format errors</strong></td>
-                            <td>Values do not conform to the required format (e.g., date format, phone number).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Uniqueness violations</strong></td>
-                            <td>Duplicate values are found in columns expected to have unique entries.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Reference integrity issues</strong></td>
-                            <td>Foreign key values do not match any entry in the referenced table.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Cross-field inconsistencies</strong></td>
-                            <td>Values in one field conflict logically with values in another (e.g., end date before start date).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Chronological errors</strong></td>
-                            <td>Temporal data is not in a logical sequence (e.g., birth date after registration).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Standardization problems</strong></td>
-                            <td>Data does not follow consistent naming or formatting conventions (e.g., inconsistent case or abbreviations).</td>
-                        </tr>
-                    </table>
                 </div>
-            </section>
+                <h2>Failed Records</h2>
+<div class="section-description">
+    A preview of the dataset will be displayed, showcasing the rows that failed validation. This preview will contain the original columns from the dataset, but failed cells (that did not meet the validation requirements) will be highlighted for easy identification.
+</div>
 
-            <section id="validation-summary">
-                <h1>Validation Summary</h1>
-                <div class="section-description">
-                    Provides a concise overview of the dataset's data quality by highlighting the percentages of each issue type detected during validation against the data dictionary.<br><br>
-                    <strong>Note:</strong><br>
-                    <strong>Formula:</strong> Issue Percentage = (Number of Fields with Issue / Total Fields) × 100%<br>
-                    <strong>Fields with Issues:</strong> {{ fields_with_issues }}<br>
-                    <strong>Total Fields:</strong> {{ total_fields }}
-                </div>
-                
-                <h2>Overall Validation Score</h2>
-                <div class="overall-score">
-                    <h3>Data Quality Score</h3>
-                    <div class="score-value {{ overall_score_class | default('score-poor') }}">
-                        {{ overall_score | default('0') }}%
-                    </div>
-                    <p>{{ overall_score_description | default('No score description available') }}</p>
-                    <div class="overall-progress-bar passed-section" style="width: {{ overall_score | default('0') }}%"></div>
-<div class="overall-progress-bar failed-section" style="width: {{ overall_failed_score | default('0') }}%"></div>
-                </div>
-                
-                <h2>Breakdown by Issue Type</h2>
-                <div class="issue-type-stats">
-                    <div class="issue-stat">
-                        <h4>Data type mismatches</h4>
-                        <p>{{ data_type_mismatches_percentage }}%</p>
-                        <div class="progress-container">
-                            <div class="progress-bar progress-bar-{{ data_type_mismatches_severity }}" style="width: {{ data_type_mismatches_percentage }}%"></div>
-                        </div>
-                    </div>
-                    <div class="issue-stat">
-                        <h4>Missing or extra columns</h4>
-                        <p>{{ missing_or_extra_columns_percentage }}%</p>
-                        <div class="progress-container">
-                            <div class="progress-bar progress-bar-{{ missing_or_extra_columns_severity }}" style="width: {{ missing_or_extra_columns_percentage }}%"></div>
-                        </div>
-                    </div>
-                    <div class="issue-stat">
-                        <h4>Nullability violations</h4>
-                        <p>{{ nullability_violations_percentage }}%</p>
-                        <div class="progress-container">
-                            <div class="progress-bar progress-bar-{{ nullability_violations_severity }}" style="width: {{ nullability_violations_percentage }}%"></div>
-                        </div>
-                    </div>
-                    <div class="issue-stat">
-                        <h4>Out-of-range values</h4>
-                        <p>{{ out_of_range_values_percentage }}%</p>
-                        <div class="progress-container">
-                            <div class="progress-bar progress-bar-{{ out_of_range_values_severity }}" style="width: {{ out_of_range_values_percentage }}%"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="issue-type-stats">
-                    <div class="issue-stat">
-                        <h4>Format errors</h4>
-                        <p>{{ format_errors_percentage }}%</p>
-                        <div class="progress-container">
-                            <div class="progress-bar progress-bar-{{ format_errors_severity }}" style="width: {{ format_errors_percentage }}%"></div>
-                        </div>
-                    </div>
-                    <div class="issue-stat">
-                        <h4>Uniqueness violations</h4>
-                        <p>{{ uniqueness_violations_percentage }}%</p>
-                        <div class="progress-container">
-                            <div class="progress-bar progress-bar-{{ uniqueness_violations_severity }}" style="width: {{ uniqueness_violations_percentage }}%"></div>
-                        </div>
-                    </div>
-                    <div class="issue-stat">
-                        <h4>Reference integrity issues</h4>
-                        <p>{{ reference_integrity_issues_percentage }}%</p>
-                        <div class="progress-container">
-                            <div class="progress-bar progress-bar-{{ reference_integrity_issues_severity }}" style="width: {{ reference_integrity_issues_percentage }}%"></div>
-                        </div>
-                    </div>
-                    <div class="issue-stat">
-                        <h4>Cross-field inconsistencies</h4>
-                        <p>{{ cross_field_inconsistencies_percentage }}%</p>
-                        <div class="progress-container">
-                            <div class="progress-bar progress-bar-{{ cross_field_inconsistencies_severity }}" style="width: {{ cross_field_inconsistencies_percentage }}%"></div>
-                        </div>
-                    </div>
-                    </div>
-                    
-                    <div class="issue-type-stats">
-                        <div class="issue-stat">
-                            <h4>Chronological errors</h4>
-                            <p>{{ chronological_errors_percentage }}%</p>
-                            <div class="progress-container">
-                                <div class="progress-bar progress-bar-{{ chronological_errors_severity }}" style="width: {{ chronological_errors_percentage }}%"></div>
-                            </div>
-                        </div>
-                        <div class="issue-stat">
-                            <h4>Standardization problems</h4>
-                            <p>{{ standardization_problems_percentage }}%</p>
-                            <div class="progress-container">
-                                <div class="progress-bar progress-bar-{{ standardization_problems_severity }}" style="width: {{ standardization_problems_percentage }}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="analysis-insights">
-                        <h3>Summary Analysis</h3>
-                        <p>{{ summary_analysis_intro }}</p>
-                        <ul>
-                            <li><strong>Missing Values:</strong> {{ missing_values_summary | default('N/A') }}</li>
-                            <li><strong>Data Type Issues:</strong> {{ data_type_issues_summary | default('N/A') }}</li>
-                            <li><strong>Format and Range Problems:</strong> {{ format_range_problems_summary | default('N/A') }}</li>
-                            <li><strong>Uniqueness and Standardization:</strong> {{ uniqueness_standardization_summary | default('N/A') }}</li>
-                            <li><strong>Constraint and Reference Issues:</strong> {{ constraint_reference_summary | default('N/A') }}</li>
-                            <li><strong>Cross-field and Chronological Issues:</strong> {{ crossfield_chronological_summary | default('N/A') }}</li>
-                            <li><strong>Most Problematic Issue Types:</strong> {{ problematic_issue_types_summary | default('N/A') }}</li>
-                        </ul>
-                    </div>
-                </section>
+<!-- Filter Controls -->
+<div style="margin: 20px 0; display: flex; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <label for="issueFilter"><strong>Filter by Issue Type:</strong></label><br>
+        <select id="issueFilter">
+            <option value="all">All</option>
+            <option value="Data type mismatches">Data type mismatches</option>
+            <option value="Missing or extra columns">Missing or extra columns</option>
+            <option value="Nullability violations">Nullability violations</option>
+            <option value="Out-of-range values">Out-of-range values</option>
+            <option value="Format errors">Format errors</option>
+            <option value="Uniqueness violations">Uniqueness violations</option>
+            <option value="Reference integrity issues">Reference integrity issues</option>
+            <option value="Cross-field inconsistencies">Cross-field inconsistencies</option>
+            <option value="Chronological errors">Chronological errors</option>
+            <option value="Standardization problems">Standardization problems</option>
+        </select>
+    </div>
+    <div>
+        <label for="fieldFilter"><strong>Filter by Field Name:</strong></label><br>
+        <select id="fieldFilter">
+            <option value="all">All</option>
+            {% for field in failed_fields %}
+            <option value="{{ field }}">{{ field }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
 
+<!-- Table -->
+<div class="data-preview scrollable-table" id="failedDataPreview">
+    {{ df_preview_issues_html | safe }}
+</div>
+
+<!-- JS Filter Logic and Pagination -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Filter logic for failed records table
+    const issueFilter = document.getElementById('issueFilter');
+    const fieldFilter = document.getElementById('fieldFilter');
+
+    function applyFilters() {
+        const selectedIssue = issueFilter.value;
+        const selectedField = fieldFilter.value;
+        const rows = document.querySelectorAll('#failedDataPreview tr[data-issue-type]');
+
+        rows.forEach(row => {
+            const issueType = row.getAttribute('data-issue-type');
+            const fieldName = row.getAttribute('data-field-name');
+
+            const issueMatch = (selectedIssue === 'all' || issueType === selectedIssue);
+            const fieldMatch = (selectedField === 'all' || fieldName === selectedField);
+
+            row.style.display = (issueMatch && fieldMatch) ? '' : 'none';
+        });
+    }
+
+    if (issueFilter && fieldFilter) {
+        issueFilter.addEventListener('change', applyFilters);
+        fieldFilter.addEventListener('change', applyFilters);
+    }
+
+    // Pagination for large tables (>30 rows)
+    const tables = document.querySelectorAll('.data-preview table');
+
+    tables.forEach((table, index) => {
+        const rows = table.querySelectorAll('tbody tr');
+        if (rows.length > 30) {
+            let currentPage = 0;
+            const rowsPerPage = 30;
+
+            const paginate = () => {
+                rows.forEach((row, i) => {
+                    row.style.display = (i >= currentPage * rowsPerPage && i < (currentPage + 1) * rowsPerPage) ? '' : 'none';
+                });
+            };
+
+            const paginationControls = document.createElement('div');
+            paginationControls.style.margin = '10px 0';
+            paginationControls.innerHTML = `
+                <button class="prev-page">Previous</button>
+                <span class="page-info">Page 1</span>
+                <button class="next-page">Next</button>
+            `;
+
+            const prevBtn = paginationControls.querySelector('.prev-page');
+            const nextBtn = paginationControls.querySelector('.next-page');
+            const pageInfo = paginationControls.querySelector('.page-info');
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    currentPage--;
+                    paginate();
+                    pageInfo.textContent = "Page " + (currentPage + 1);
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if ((currentPage + 1) * rowsPerPage < rows.length) {
+                    currentPage++;
+                    paginate();
+                    pageInfo.textContent = "Page " + (currentPage + 1);
+                }
+            });
+
+            table.parentNode.insertBefore(paginationControls, table);
+            paginate();
+        }
+    });
+
+    // Smooth scrolling for anchor links in sidebar
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+});
+</script>
                 <section id="recommendations" class="section">
                     <h2>Recommendations</h2>
                     <ul>
